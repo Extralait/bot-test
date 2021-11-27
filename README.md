@@ -12,6 +12,7 @@ docker-compose down
 ```
 
 ### Run script
+
 ```
 docker-compose exec web {script} 
 ```
