@@ -19,7 +19,7 @@ jobs:
         KEY: ${{ secrets.SSH_KEY }}
       with:
         source: "."
-        target: "/root"
+        target: "/root/test"
 
     - name: Executing remote command
       uses: appleboy/ssh-action@master
@@ -28,8 +28,8 @@ jobs:
         USERNAME: ${{ secrets.USERNAME }}
         PORT: ${{ secrets.SSH_PORT }}
         KEY: ${{ secrets.SSH_KEY }}
-        script: cd root/&&ls
-        
+        script: cd test/&&ls
+      
     - name: Rebuild command
       uses: appleboy/ssh-action@master
       with:
@@ -37,9 +37,7 @@ jobs:
         USERNAME: ${{ secrets.USERNAME }}
         PORT: ${{ secrets.SSH_PORT }}
         KEY: ${{ secrets.SSH_KEY }}
-        script:  cd root/&&docker build -t web-image ./Bot
-
-
+        script:  cd test/&&docker build -t web-image ./Bot
     - name: Rebuild command
       uses: appleboy/ssh-action@master
       with:
@@ -47,4 +45,20 @@ jobs:
         USERNAME: ${{ secrets.USERNAME }}
         PORT: ${{ secrets.SSH_PORT }}
         KEY: ${{ secrets.SSH_KEY }}
-        script:  cd root/&&docker-compose up -d 
+        script:  cd test/&&docker-compose up
+    - name: Rebuild command
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        USERNAME: ${{ secrets.USERNAME }}
+        PORT: ${{ secrets.SSH_PORT }}
+        KEY: ${{ secrets.SSH_KEY }}
+        script:  cd test/&&docker-compose exec web python manage.py create_admin
+    - name: Rebuild command
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        USERNAME: ${{ secrets.USERNAME }}
+        PORT: ${{ secrets.SSH_PORT }}
+        KEY: ${{ secrets.SSH_KEY }}
+        script:  cd test/&&docker-compose exec web python manage.py add_default_dialog
