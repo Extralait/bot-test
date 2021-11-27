@@ -37,7 +37,7 @@ jobs:
         USERNAME: ${{ secrets.USERNAME }}
         PORT: ${{ secrets.SSH_PORT }}
         KEY: ${{ secrets.SSH_KEY }}
-        script:  cd test/&&docker build -t web-image ./Bot
+        script:  cd test/&&docker build -t web-image Bot
     - name: Rebuild command
       uses: appleboy/ssh-action@master
       with:
